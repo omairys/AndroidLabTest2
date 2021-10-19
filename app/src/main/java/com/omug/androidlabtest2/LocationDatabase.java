@@ -30,4 +30,8 @@ public abstract class LocationDatabase extends RoomDatabase {
         }
         return INSTANCE;
     }
+
+    public  void cleanUp(){
+        INSTANCE = null;
+    }
 }

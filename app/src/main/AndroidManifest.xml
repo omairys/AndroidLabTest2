@@ -15,7 +15,7 @@
         android:theme="@style/Theme.AndroidLabTest2">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCJ3OChdx4VbnvywbmnR-JClg74T6KBFMk" />
+            android:value="@string/google_maps_key" />
 
 
         <activity android:name="com.omug.androidlabtest2.AddLocationActivity"></activity>
