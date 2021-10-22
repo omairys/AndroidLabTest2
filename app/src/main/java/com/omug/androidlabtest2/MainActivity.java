@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         addMarkersToMap();
-
         mMap.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) this);
     }
 

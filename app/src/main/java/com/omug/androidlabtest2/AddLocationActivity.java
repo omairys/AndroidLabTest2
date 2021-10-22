@@ -9,8 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.omug.androidlabtest2.R;
-
 import java.lang.ref.WeakReference;
 
 public class AddLocationActivity extends AppCompatActivity {
@@ -99,7 +97,7 @@ public class AddLocationActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... objs) {
             // retrieve auto incremented person id
-            long j = activityReference.get().locationDatabase.personDao().insertPerson(location);
+            long j = activityReference.get().locationDatabase.personDao().insertLocation(location);
             location.setId(j);
             Log.e("ID ", "doInBackground: " + j);
             return true;

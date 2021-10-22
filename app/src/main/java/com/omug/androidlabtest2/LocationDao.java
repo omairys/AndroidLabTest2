@@ -19,7 +19,7 @@ public interface LocationDao {
      * @param person, object to be inserted
      */
     @Insert
-    long insertPerson(Location location);
+    long insertLocation(Location location);
 
     /*
      * update the object in database
