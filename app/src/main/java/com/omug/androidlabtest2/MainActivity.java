@@ -10,16 +10,19 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,  GoogleMap.OnMarkerClickListener{
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,  GoogleMap.OnInfoWindowClickListener{
     GoogleMap mMap;
     private Toolbar mToolbar;
     private LocationDatabase locationDatabase;
@@ -53,13 +56,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         addMarkersToMap();
-        mMap.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) this);
+        mMap.setOnInfoWindowClickListener((GoogleMap.OnInfoWindowClickListener) this);
     }
 
     private void addMarkersToMap() {
         for (Location location : locations) {
             mMap.addMarker(new MarkerOptions()
-                    .position(location.getLocation())
+                    .position(new LatLng(location.getLatitude(), location.getLongitude()))
                     .title(location.getTitle())
                     .snippet(location.getSubtitle())
             );
@@ -73,25 +76,24 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public boolean onMarkerClick(Marker marker) {
+    public void onInfoWindowClick(Marker marker) {
+        //Toast.makeText(MainActivity.this, "Click Info Window", Toast.LENGTH_SHORT).show();
         for (Location location : locations) {
 
             Marker currentMark = mMap.addMarker(new MarkerOptions()
-                    .position(location.getLocation())
+                    .position(new LatLng(location.getLatitude(), location.getLongitude()))
                     .title(location.getTitle())
                     .snippet(location.getSubtitle())
             );
             Log.w("Click", "is "+marker.getTitle().equalsIgnoreCase(currentMark.getTitle()));
             if(marker.getTitle().equalsIgnoreCase(currentMark.getTitle())){
-
+                this.pos = locations.indexOf(location);
                 startActivityForResult(
                         new Intent(MainActivity.this, AddLocationActivity.class).putExtra("location", location), 100);
-                return true;
             }
         }
-
-        return true;
     }
+
 
     //este metodo carga la informacion de las localizaciones en la lista
     private static class RetrieveTask extends AsyncTask<Void, Void, List<Location>> {
@@ -152,7 +154,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             } else if (resultCode == 3) {
                 locations.remove(pos);
             }
-            displayLocationList();
+            onResetMap();
+            //displayLocationList();
         }
     }
 
